@@ -8,6 +8,7 @@
 
 Consulte os guias detalhados criados para guiar o desenvolvimento:
 
+* 📌 **[Board Oficial no GitHub Projects](https://github.com/users/derek-alves/projects/3)**: Quadro Kanban interativo com as 26 issues cadastradas e organizadas por Milestones.
 * 📋 **[Plano de Engenharia & Backlog de Tarefas](docs/base/plano-projeto-feira-e-cia.md)**: Todas as 22 issues detalhadas com checklists passo a passo, contratos de API e divisão pareada (Dev A vs Dev B).
 * 🌿 **[Guia de Git, Branches, Commits e Pull Requests](docs/guia-git-e-governanca.md)**: Padrão de branches (`feat/`, `fix/`), Conventional Commits e passo a passo de Code Review.
 * 🧠 **[Guia de Tecnologias, Conceitos e Arquitetura](docs/guia-tecnologias-e-conceitos.md)**: Explicação direta sobre NestJS, Prisma, Swagger, Tailwind, Docker, React, Zod e JWT.
