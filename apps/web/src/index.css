@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+:root {
+  --paper: #F3E9D2;
+  --paper-dark: #EADFC4;
+  --ink: #2B2118;
+  --ink-soft: #6b5f4e;
+  --awning: #1F3D2B;
+  --awning-light: #2C5940;
+  --accent: #C0392B;
+  --line: rgba(43, 33, 24, 0.14);
+
+  --c-limpeza: #2F6F5E;
+  --c-higiene: #3E7CB8;
+  --c-mercearia: #A9662E;
+  --c-padaria: #C99A3E;
+  --c-congelados: #5B8FA8;
+  --c-carnes: #A83E3E;
+  --c-frutas: #D9713C;
+  --c-legumes: #6E8B3D;
+  --c-bebidas: #7A5C8E;
+  --c-laticinios: #D9B44A;
+}
+
+body {
+  margin: 0;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}

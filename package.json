@@ -1,0 +1,22 @@
+{
+  "name": "feira-e-cia",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Monorepo do Feira & Cia - Plataforma Full-Stack de Lista de Mercado",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:api": "npm run start:dev --workspace=apps/api",
+    "dev:web": "npm run dev --workspace=apps/web",
+    "build:api": "npm run build --workspace=apps/api",
+    "build:web": "npm run build --workspace=apps/web",
+    "build": "npm run build:api && npm run build:web",
+    "prisma:generate": "npm run prisma --workspace=apps/api -- generate",
+    "prisma:studio": "npx prisma studio --schema=apps/api/prisma/schema.prisma",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f"
+  },
+  "devDependencies": {}
+}

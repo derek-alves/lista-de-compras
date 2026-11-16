@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>Lista do Mercado</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=DM+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F3E9D2;
+    --paper-dark:#EADFC4;
+    --ink:#2B2118;
+    --ink-soft:#6b5f4e;
+    --awning:#1F3D2B;
+    --awning-light:#2C5940;
+    --accent:#C0392B;
+    --line: rgba(43,33,24,0.14);
+    --c-limpeza:#2F6F5E;
+    --c-higiene:#3E7CB8;
+    --c-mercearia:#A9662E;
+    --c-padaria:#C99A3E;
+    --c-congelados:#5B8FA8;
+    --c-carnes:#A83E3E;
+    --c-frutas:#D9713C;
+    --c-legumes:#6E8B3D;
+    --c-bebidas:#7A5C8E;
+    --c-laticinios:#D9B44A;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'DM Sans', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #app{max-width:520px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;padding-bottom:96px;}
+
+  header.top{
+    background:var(--awning);
+    color:var(--paper);
+    padding:22px 18px 14px;
+    position:sticky; top:0; z-index:20;
+  }
+  header.top h1{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size:26px;
+    margin:0 0 2px;
+    letter-spacing:0.2px;
+  }
+  header.top p.tagline{
+    margin:0 0 14px;
+    font-size:12.5px;
+    color:#c9d8cc;
+    font-style:italic;
+  }
+  nav.tabs{display:flex; gap:6px;}
+  nav.tabs button{
+    flex:1;
+    background:var(--awning-light);
+    border:none;
+    color:#dfe9e1;
+    font-family:'DM Sans',sans-serif;
+    font-weight:700;
+    font-size:13px;
+    padding:10px 6px;
+    border-radius:8px 8px 0 0;
+    cursor:pointer;
+    opacity:0.65;
+  }
+  nav.tabs button.active{
+    background:var(--paper);
+    color:var(--awning);
+    opacity:1;
+  }
+
+  main{flex:1; padding:16px;}
+  section{display:block;}
+  section[hidden]{display:none;}
+
+  /* ---- LISTA TAB ---- */
+  .search-wrap{margin-bottom:14px;}
+  .search-wrap input{
+    width:100%;
+    padding:11px 14px;
+    border-radius:10px;
+    border:1px solid var(--line);
+    background:#fffdf7;
+    font-family:'DM Sans',sans-serif;
+    font-size:14px;
+    color:var(--ink);
+  }
+  .cat-block{margin-bottom:18px;}
+  .cat-head{
+    display:flex; align-items:center; gap:8px;
+    margin-bottom:8px;
+    padding-left:8px;
+    border-left:5px solid var(--cat-color, var(--accent));
+  }
+  .cat-head .icon{font-size:17px;}
+  .cat-head h2{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:16px;
+    margin:0;
+  }
+  .chips{display:flex; flex-wrap:wrap; gap:8px;}
+  .chip{
+    border:1.5px solid var(--line);
+    background:#fffdf7;
+    color:var(--ink);
+    border-radius:20px;
+    padding:8px 13px;
+    font-size:13px;
+    font-family:'DM Sans',sans-serif;
+    cursor:pointer;
+    display:flex; align-items:center; gap:6px;
+    transition: transform .08s ease;
+  }
+  .chip:active{transform:scale(0.96);}
+  .chip.selected{
+    background:var(--cat-color, var(--accent));
+    border-color:var(--cat-color, var(--accent));
+    color:#fff9ef;
+    font-weight:700;
+  }
+  .chip .dot{width:6px;height:6px;border-radius:50%;background:var(--cat-color,var(--accent)); flex-shrink:0;}
+  .chip.selected .dot{background:#fff9ef;}
+
+  #floatbar{
+    position:fixed; left:0; right:0; bottom:0;
+    max-width:520px; margin:0 auto;
+    background:var(--accent);
+    color:#fff8ef;
+    padding:14px 18px;
+    display:flex; justify-content:space-between; align-items:center;
+    font-family:'DM Sans',sans-serif;
+    box-shadow:0 -6px 18px rgba(0,0,0,0.18);
+    z-index:30;
+  }
+  #floatbar span{font-size:13.5px; font-weight:500;}
+  #floatbar button{
+    background:#fff8ef; color:var(--accent);
+    border:none; border-radius:8px; padding:9px 16px;
+    font-weight:700; font-size:13.5px; cursor:pointer;
+  }
+  #floatbar .clear-link{
+    background:transparent; color:#fadbd4; text-decoration:underline;
+    font-weight:500; padding:0; margin-right:10px;
+  }
+
+  /* ---- COMPRA TAB ---- */
+  .date-row{
+    display:flex; align-items:center; gap:10px;
+    background:#fffdf7; border:1px solid var(--line);
+    border-radius:10px; padding:12px 14px; margin-bottom:16px;
+  }
+  .date-row label{font-size:13px; font-weight:700; color:var(--ink-soft);}
+  .date-row input[type=date]{
+    border:none; background:transparent; font-family:'Space Mono',monospace;
+    font-size:14px; color:var(--ink); flex:1;
+  }
+  .empty-msg{
+    text-align:center; color:var(--ink-soft); font-size:14px;
+    padding:40px 20px; line-height:1.6;
+  }
+  .row-item{
+    background:#fffdf7; border:1px solid var(--line); border-radius:10px;
+    padding:12px 14px; margin-bottom:10px;
+  }
+  .row-item .ritop{display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;}
+  .row-item .riname{display:flex; align-items:center; gap:7px; font-weight:700; font-size:14px;}
+  .row-item .riname .dot{width:8px;height:8px;border-radius:50%;background:var(--cat-color,var(--accent));}
+  .row-item .rirmv{background:none;border:none;color:var(--ink-soft);font-size:18px;cursor:pointer;line-height:1;}
+  .rifields{display:flex; gap:10px;}
+  .rifield{flex:1;}
+  .rifield label{display:block; font-size:10.5px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.4px; margin-bottom:3px;}
+  .rifield input{
+    width:100%; border:1px solid var(--line); border-radius:7px;
+    padding:8px 9px; font-family:'Space Mono',monospace; font-size:14px;
+    background:#fff; color:var(--ink);
+  }
+  .risub{
+    text-align:right; margin-top:6px; font-family:'Space Mono',monospace;
+    font-size:13px; color:var(--ink-soft);
+  }
+
+  .receipt-bar{
+    position:fixed; left:0; right:0; bottom:0;
+    max-width:520px; margin:0 auto;
+    background:var(--awning); color:var(--paper);
+    padding:20px 20px 16px;
+    z-index:30;
+  }
+  .receipt-bar.torn::before{
+    content:"";
+    position:absolute; top:-11px; left:0; right:0; height:11px;
+    background:
+      linear-gradient(135deg, var(--paper) 50%, transparent 50%),
+      linear-gradient(225deg, var(--paper) 50%, transparent 50%);
+    background-size:18px 22px; background-position:0 0, 9px 0;
+    background-repeat:repeat-x;
+  }
+  .receipt-bar{position:fixed;}
+  .receipt-row{display:flex; justify-content:space-between; align-items:baseline;}
+  .receipt-row .lbl{font-size:12px; letter-spacing:0.5px; text-transform:uppercase; color:#b9c9bd;}
+  .receipt-row .val{font-family:'Space Mono',monospace; font-size:24px; font-weight:700;}
+  .receipt-bar button{
+    width:100%; margin-top:12px; background:var(--accent); color:#fff8ef;
+    border:none; border-radius:9px; padding:12px; font-weight:700; font-size:14.5px;
+    cursor:pointer;
+  }
+  .receipt-bar button:disabled{opacity:0.4;}
+
+  /* ---- PAINEL TAB ---- */
+  .kpi-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px;}
+  .kpi-grid .kpi-full{grid-column:1 / -1;}
+  .kpi-card{
+    background:#fffdf7; border:1px solid var(--line); border-radius:10px; padding:14px;
+  }
+  .kpi-card .kpi-lbl{font-size:11px; text-transform:uppercase; letter-spacing:0.4px; color:var(--ink-soft); margin-bottom:4px;}
+  .kpi-card .kpi-val{font-family:'Space Mono',monospace; font-size:21px; font-weight:700; color:var(--awning);}
+
+  .section-title{
+    font-family:'Fraunces', serif; font-weight:600; font-size:16.5px;
+    margin:22px 0 12px;
+  }
+  .bar-row{margin-bottom:11px;}
+  .bar-row .bar-head{display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px;}
+  .bar-row .bar-head .bcat{display:flex; align-items:center; gap:6px; font-weight:700;}
+  .bar-row .bar-head .bcat .dot{width:8px;height:8px;border-radius:50%;}
+  .bar-row .bar-head .bval{font-family:'Space Mono',monospace; color:var(--ink-soft);}
+  .bar-track{background:var(--paper-dark); border-radius:5px; height:9px; overflow:hidden;}
+  .bar-fill{height:100%; border-radius:5px;}
+
+  .purchase-card{
+    background:#fffdf7; border:1px solid var(--line); border-radius:10px;
+    margin-bottom:10px; overflow:hidden;
+  }
+  .purchase-card summary{
+    list-style:none; cursor:pointer; padding:13px 14px;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .purchase-card summary::-webkit-details-marker{display:none;}
+  .purchase-card .pc-date{font-weight:700; font-size:14px;}
+  .purchase-card .pc-sub{font-size:11.5px; color:var(--ink-soft);}
+  .purchase-card .pc-total{font-family:'Space Mono',monospace; font-size:16px; font-weight:700; color:var(--accent);}
+  .purchase-card .pc-items{padding:0 14px 14px; border-top:1px dashed var(--line);}
+  .pc-item-row{display:flex; justify-content:space-between; font-size:12.5px; padding:6px 0; border-bottom:1px dotted var(--line);}
+  .pc-item-row:last-child{border-bottom:none;}
+  .pc-item-row .pin{display:flex; align-items:center; gap:6px;}
+  .pc-item-row .dot{width:6px;height:6px;border-radius:50%;}
+  .pc-del{
+    margin-top:10px; background:none; border:1px solid var(--accent); color:var(--accent);
+    border-radius:7px; padding:6px 11px; font-size:12px; cursor:pointer; font-weight:700;
+  }
+
+  #toast{
+    position:fixed; left:50%; bottom:110px; transform:translateX(-50%) translateY(20px);
+    background:var(--ink); color:var(--paper); padding:10px 18px; border-radius:8px;
+    font-size:13px; opacity:0; pointer-events:none; transition:all .25s ease; z-index:50;
+  }
+  #toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <h1>🧺 Feira &amp; Cia</h1>
+    <p class="tagline">nunca mais esquece nada no mercado</p>
+    <nav class="tabs">
+      <button data-tab="lista" class="active">Lista</button>
+      <button data-tab="compra">Compra</button>
+      <button data-tab="painel">Painel</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- LISTA -->
+    <section id="tab-lista">
+      <div class="search-wrap">
+        <input type="text" id="searchInput" placeholder="Buscar produto...">
+      </div>
+      <div id="catalogWrap"></div>
+    </section>
+
+    <!-- COMPRA -->
+    <section id="tab-compra" hidden>
+      <div class="date-row">
+        <label for="purchaseDate">Data da compra</label>
+        <input type="date" id="purchaseDate">
+      </div>
+      <div id="compraList"></div>
+    </section>
+
+    <!-- PAINEL -->
+    <section id="tab-painel" hidden>
+      <div class="kpi-grid" id="kpiGrid"></div>
+      <div class="section-title">Gasto por categoria</div>
+      <div id="catBars"></div>
+      <div class="section-title">Histórico de compras</div>
+      <div id="historyList"></div>
+    </section>
+  </main>
+
+  <div id="floatbar" hidden>
+    <div>
+      <button class="clear-link" id="clearSelBtn">limpar</button>
+      <span id="selCount">0 itens selecionados</span>
+    </div>
+    <button id="goCompraBtn">Iniciar compra →</button>
+  </div>
+
+  <div id="toast"></div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  const CATALOG = [
+    {cat:"Limpeza", icon:"🧼", color:"var(--c-limpeza)", items:["Detergente","Sabão em pó","Amaciante","Água sanitária","Desinfetante","Esponja de aço","Papel higiênico","Papel toalha","Saco de lixo","Sabão em barra"]},
+    {cat:"Higiene", icon:"🪥", color:"var(--c-higiene)", items:["Sabonete","Shampoo","Condicionador","Creme dental","Escova de dente","Desodorante","Absorvente","Fio dental","Aparelho de barbear","Algodão"]},
+    {cat:"Mercearia", icon:"🛒", color:"var(--c-mercearia)", items:["Arroz","Feijão","Óleo de soja","Açúcar","Café","Macarrão","Farinha de trigo","Sal","Molho de tomate","Biscoito"]},
+    {cat:"Padaria", icon:"🥖", color:"var(--c-padaria)", items:["Pão francês","Pão de forma","Pão doce","Torrada","Bolo pronto"]},
+    {cat:"Congelados", icon:"🧊", color:"var(--c-congelados)", items:["Pizza congelada","Lasanha congelada","Nuggets","Batata frita congelada","Polpa de fruta","Legumes congelados","Hambúrguer congelado","Sorvete","Salgadinho congelado"]},
+    {cat:"Carnes", icon:"🥩", color:"var(--c-carnes)", items:["Frango","Carne moída","Bife / Alcatra","Linguiça","Bacon","Costela","Peixe","Presunto / Frios","Salsicha"]},
+    {cat:"Frutas", icon:"🍎", color:"var(--c-frutas)", items:["Banana","Maçã","Laranja","Mamão","Uva","Melancia","Limão","Abacaxi","Manga"]},
+    {cat:"Legumes", icon:"🥕", color:"var(--c-legumes)", items:["Tomate","Cebola","Batata","Cenoura","Alface","Pimentão","Alho","Chuchu","Abobrinha"]},
+    {cat:"Bebidas", icon:"🥤", color:"var(--c-bebidas)", items:["Refrigerante","Suco","Energético","Água mineral","Cerveja","Água de coco"]},
+    {cat:"Laticínios", icon:"🥛", color:"var(--c-laticinios)", items:["Danone / Iogurte","Leite","Queijo","Manteiga","Requeijão","Achocolatado","Margarina"]}
+  ];
+
+  const catMeta = {};
+  CATALOG.forEach(c => catMeta[c.cat] = {icon:c.icon, color:c.color});
+
+  let selected = {};      // name -> {name, cat}
+  let history = [];       // array of purchase records
+  let compraDraft = {};   // name -> {qty, price} while filling compra tab
+
+  const hasStorage = typeof window !== 'undefined' && !!window.storage;
+
+  async function loadState(){
+    if(hasStorage){
+      try{
+        const r = await window.storage.get('lista-rascunho');
+        if(r && r.value) selected = JSON.parse(r.value);
+      }catch(e){}
+      try{
+        const r = await window.storage.get('compras-historico');
+        if(r && r.value) history = JSON.parse(r.value);
+      }catch(e){}
+      try{
+        const r = await window.storage.get('compra-rascunho');
+        if(r && r.value) compraDraft = JSON.parse(r.value);
+      }catch(e){}
+    }
+  }
+  async function saveSelected(){
+    if(hasStorage){ try{ await window.storage.set('lista-rascunho', JSON.stringify(selected)); }catch(e){} }
+  }
+  async function saveHistory(){
+    if(hasStorage){ try{ await window.storage.set('compras-historico', JSON.stringify(history)); }catch(e){} }
+  }
+  async function saveCompraDraft(){
+    if(hasStorage){ try{ await window.storage.set('compra-rascunho', JSON.stringify(compraDraft)); }catch(e){} }
+  }
+
+  function fmtBRL(n){
+    return "R$ " + (Math.round(n*100)/100).toFixed(2).replace('.', ',');
+  }
+  function showToast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'), 1800);
+  }
+
+  // ---------- LISTA TAB ----------
+  function renderCatalog(filter){
+    const wrap = document.getElementById('catalogWrap');
+    wrap.innerHTML = '';
+    filter = (filter||'').trim().toLowerCase();
+    CATALOG.forEach(cat => {
+      const items = cat.items.filter(i => !filter || i.toLowerCase().includes(filter));
+      if(!items.length) return;
+      const block = document.createElement('div');
+      block.className = 'cat-block';
+      const head = document.createElement('div');
+      head.className = 'cat-head';
+      head.style.setProperty('--cat-color', cat.color);
+      head.innerHTML = '<span class="icon">'+cat.icon+'</span><h2>'+cat.cat+'</h2>';
+      block.appendChild(head);
+      const chips = document.createElement('div');
+      chips.className = 'chips';
+      items.forEach(name => {
+        const key = cat.cat + '::' + name;
+        const chip = document.createElement('button');
+        chip.className = 'chip' + (selected[key] ? ' selected' : '');
+        chip.style.setProperty('--cat-color', cat.color);
+        chip.innerHTML = '<span class="dot"></span>' + name;
+        chip.addEventListener('click', () => toggleItem(key, name, cat.cat));
+        chips.appendChild(chip);
+      });
+      block.appendChild(chips);
+      wrap.appendChild(block);
+    });
+  }
+
+  function toggleItem(key, name, catName){
+    if(selected[key]){
+      delete selected[key];
+    } else {
+      selected[key] = {name:name, cat:catName};
+    }
+    saveSelected();
+    renderCatalog(document.getElementById('searchInput').value);
+    updateFloatbar();
+  }
+
+  function updateFloatbar(){
+    const count = Object.keys(selected).length;
+    const bar = document.getElementById('floatbar');
+    if(count === 0){ bar.hidden = true; return; }
+    bar.hidden = false;
+    document.getElementById('selCount').textContent = count + (count===1 ? ' item selecionado' : ' itens selecionados');
+  }
+
+  document.getElementById('searchInput').addEventListener('input', e => renderCatalog(e.target.value));
+  document.getElementById('clearSelBtn').addEventListener('click', () => {
+    selected = {};
+    saveSelected();
+    renderCatalog(document.getElementById('searchInput').value);
+    updateFloatbar();
+  });
+  document.getElementById('goCompraBtn').addEventListener('click', () => switchTab('compra'));
+
+  // ---------- COMPRA TAB ----------
+  function renderCompra(){
+    const dateInput = document.getElementById('purchaseDate');
+    if(!dateInput.value){
+      const today = new Date();
+      dateInput.value = today.toISOString().slice(0,10);
+    }
+    const list = document.getElementById('compraList');
+    list.innerHTML = '';
+    const keys = Object.keys(selected);
+    if(keys.length === 0){
+      list.innerHTML = '<div class="empty-msg">Sua lista está vazia.<br>Volte para a aba <b>Lista</b> e toque nos produtos que você vai comprar.</div>';
+      removeReceiptBar();
+      return;
+    }
+    keys.forEach(key => {
+      const item = selected[key];
+      const meta = catMeta[item.cat] || {color:'var(--accent)'};
+      const draft = compraDraft[key] || {qty:'', price:''};
+      const row = document.createElement('div');
+      row.className = 'row-item';
+      row.innerHTML =
+        '<div class="ritop">'+
+          '<div class="riname"><span class="dot" style="background:'+meta.color+'"></span>'+item.name+'</div>'+
+          '<button class="rirmv" data-key="'+key+'" title="remover">✕</button>'+
+        '</div>'+
+        '<div class="rifields">'+
+          '<div class="rifield"><label>Quantidade</label><input type="number" min="0" step="0.01" inputmode="decimal" placeholder="0" data-key="'+key+'" data-field="qty" value="'+draft.qty+'"></div>'+
+          '<div class="rifield"><label>Valor unit. (R$)</label><input type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00" data-key="'+key+'" data-field="price" value="'+draft.price+'"></div>'+
+        '</div>'+
+        '<div class="risub" id="sub-'+cssKey(key)+'">'+fmtBRL(0)+'</div>';
+      list.appendChild(row);
+    });
+
+    list.querySelectorAll('input').forEach(inp => {
+      inp.addEventListener('input', onCompraInput);
+    });
+    list.querySelectorAll('.rirmv').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const key = btn.getAttribute('data-key');
+        delete selected[key];
+        delete compraDraft[key];
+        saveSelected(); saveCompraDraft();
+        renderCompra();
+        updateFloatbar();
+      });
+    });
+
+    ensureReceiptBar();
+    recomputeTotal();
+  }
+
+  function cssKey(key){ return key.replace(/[^a-zA-Z0-9]/g,'_'); }
+
+  function onCompraInput(e){
+    const key = e.target.getAttribute('data-key');
+    const field = e.target.getAttribute('data-field');
+    if(!compraDraft[key]) compraDraft[key] = {qty:'', price:''};
+    compraDraft[key][field] = e.target.value;
+    saveCompraDraft();
+    const qty = parseFloat(compraDraft[key].qty) || 0;
+    const price = parseFloat(compraDraft[key].price) || 0;
+    document.getElementById('sub-'+cssKey(key)).textContent = fmtBRL(qty*price);
+    recomputeTotal();
+  }
+
+  function recomputeTotal(){
+    let total = 0;
+    Object.keys(selected).forEach(key => {
+      const d = compraDraft[key] || {};
+      total += (parseFloat(d.qty)||0) * (parseFloat(d.price)||0);
+    });
+    const totalEl = document.getElementById('receiptTotal');
+    if(totalEl) totalEl.textContent = fmtBRL(total);
+    const finishBtn = document.getElementById('finishBtn');
+    if(finishBtn) finishBtn.disabled = (total <= 0);
+  }
+
+  function ensureReceiptBar(){
+    if(document.getElementById('receiptBar')) return;
+    const bar = document.createElement('div');
+    bar.id = 'receiptBar';
+    bar.className = 'receipt-bar torn';
+    bar.innerHTML =
+      '<div class="receipt-row"><span class="lbl">Total da compra</span><span class="val" id="receiptTotal">R$ 0,00</span></div>'+
+      '<button id="finishBtn" disabled>Finalizar compra</button>';
+    document.getElementById('app').appendChild(bar);
+    document.getElementById('finishBtn').addEventListener('click', finalizarCompra);
+  }
+  function removeReceiptBar(){
+    const bar = document.getElementById('receiptBar');
+    if(bar) bar.remove();
+  }
+
+  function finalizarCompra(){
+    const date = document.getElementById('purchaseDate').value;
+    const items = [];
+    const byCategory = {};
+    let total = 0;
+    Object.keys(selected).forEach(key => {
+      const it = selected[key];
+      const d = compraDraft[key] || {};
+      const qty = parseFloat(d.qty) || 0;
+      const price = parseFloat(d.price) || 0;
+      const subtotal = qty * price;
+      items.push({name:it.name, cat:it.cat, qty:qty, price:price, subtotal:subtotal});
+      byCategory[it.cat] = (byCategory[it.cat]||0) + subtotal;
+      total += subtotal;
+    });
+    const record = {
+      id: Date.now().toString(36) + Math.random().toString(36).slice(2,6),
+      date: date,
+      items: items,
+      total: total,
+      byCategory: byCategory,
+      savedAt: Date.now()
+    };
+    history.push(record);
+    saveHistory();
+
+    selected = {};
+    compraDraft = {};
+    saveSelected();
+    saveCompraDraft();
+
+    showToast('Compra salva! Total: ' + fmtBRL(total));
+    updateFloatbar();
+    renderCompra();
+    renderPainel();
+    switchTab('painel');
+  }
+
+  // ---------- PAINEL TAB ----------
+  function renderPainel(){
+    const kpiGrid = document.getElementById('kpiGrid');
+    const totalGeral = history.reduce((s,h)=>s+h.total,0);
+    const numCompras = history.length;
+    const media = numCompras ? totalGeral/numCompras : 0;
+    let maiorCat = '—', maiorVal = 0;
+    const catTotals = {};
+    history.forEach(h => {
+      Object.keys(h.byCategory||{}).forEach(c => {
+        catTotals[c] = (catTotals[c]||0) + h.byCategory[c];
+      });
+    });
+    Object.keys(catTotals).forEach(c => { if(catTotals[c] > maiorVal){ maiorVal = catTotals[c]; maiorCat = c; }});
+
+    kpiGrid.innerHTML =
+      '<div class="kpi-card"><div class="kpi-lbl">Total gasto</div><div class="kpi-val">'+fmtBRL(totalGeral)+'</div></div>'+
+      '<div class="kpi-card"><div class="kpi-lbl">Compras feitas</div><div class="kpi-val">'+numCompras+'</div></div>'+
+      '<div class="kpi-card"><div class="kpi-lbl">Média por compra</div><div class="kpi-val">'+fmtBRL(media)+'</div></div>'+
+      '<div class="kpi-card"><div class="kpi-lbl">Categoria que mais pesa</div><div class="kpi-val" style="font-size:15px;">'+maiorCat+'</div></div>';
+
+    const barsWrap = document.getElementById('catBars');
+    const sortedCats = Object.keys(catTotals).sort((a,b)=>catTotals[b]-catTotals[a]);
+    if(sortedCats.length === 0){
+      barsWrap.innerHTML = '<div class="empty-msg">Ainda não há gastos por categoria.</div>';
+    } else {
+      const max = catTotals[sortedCats[0]];
+      barsWrap.innerHTML = sortedCats.map(c => {
+        const meta = catMeta[c] || {color:'var(--accent)'};
+        const pct = max ? Math.round((catTotals[c]/max)*100) : 0;
+        return '<div class="bar-row">'+
+          '<div class="bar-head"><span class="bcat"><span class="dot" style="background:'+meta.color+'"></span>'+c+'</span><span class="bval">'+fmtBRL(catTotals[c])+'</span></div>'+
+          '<div class="bar-track"><div class="bar-fill" style="width:'+pct+'%; background:'+meta.color+'"></div></div>'+
+          '</div>';
+      }).join('');
+    }
+
+    const histWrap = document.getElementById('historyList');
+    if(history.length === 0){
+      histWrap.innerHTML = '<div class="empty-msg">Nenhuma compra registrada ainda.<br>Finalize uma compra na aba <b>Compra</b> para ver o histórico aqui.</div>';
+    } else {
+      const sortedHist = [...history].sort((a,b)=> (b.date||'').localeCompare(a.date||'') || b.savedAt-a.savedAt);
+      histWrap.innerHTML = sortedHist.map(h => {
+        const itemsHtml = h.items.map(it => {
+          const meta = catMeta[it.cat] || {color:'var(--accent)'};
+          return '<div class="pc-item-row"><span class="pin"><span class="dot" style="background:'+meta.color+'"></span>'+it.name+' × '+it.qty+'</span><span>'+fmtBRL(it.subtotal)+'</span></div>';
+        }).join('');
+        return '<details class="purchase-card">'+
+          '<summary><div><div class="pc-date">'+formatDateBR(h.date)+'</div><div class="pc-sub">'+h.items.length+' itens</div></div><div class="pc-total">'+fmtBRL(h.total)+'</div></summary>'+
+          '<div class="pc-items">'+itemsHtml+'<button class="pc-del" data-id="'+h.id+'">Excluir esta compra</button></div>'+
+          '</details>';
+      }).join('');
+      histWrap.querySelectorAll('.pc-del').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const id = btn.getAttribute('data-id');
+          history = history.filter(h => h.id !== id);
+          saveHistory();
+          renderPainel();
+        });
+      });
+    }
+  }
+
+  function formatDateBR(iso){
+    if(!iso) return '—';
+    const [y,m,d] = iso.split('-');
+    return d+'/'+m+'/'+y;
+  }
+
+  // ---------- TABS ----------
+  function switchTab(name){
+    ['lista','compra','painel'].forEach(t => {
+      document.getElementById('tab-'+t).hidden = (t !== name);
+      document.querySelector('nav.tabs button[data-tab="'+t+'"]').classList.toggle('active', t===name);
+    });
+    document.getElementById('floatbar').hidden = true;
+    if(name === 'lista') updateFloatbar();
+    if(name === 'compra') renderCompra();
+    if(name === 'painel') renderPainel();
+  }
+  document.querySelectorAll('nav.tabs button').forEach(btn => {
+    btn.addEventListener('click', () => switchTab(btn.getAttribute('data-tab')));
+  });
+
+  // ---------- INIT ----------
+  (async function init(){
+    await loadState();
+    renderCatalog('');
+    updateFloatbar();
+    renderPainel();
+  })();
+
+})();
+</script>
+</body>
+</html>

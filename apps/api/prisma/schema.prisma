@@ -1,0 +1,110 @@
+// Prisma Schema - Feira & Cia
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String            @id @default(uuid())
+  email        String            @unique
+  name         String
+  passwordHash String
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  lists        ShoppingList[]
+  purchases    PurchaseHistory[]
+  products     Product[]         @relation("CreatedByUser")
+
+  @@map("users")
+}
+
+model Category {
+  id        String    @id @default(uuid())
+  name      String    @unique
+  icon      String
+  color     String
+  createdAt DateTime  @default(now())
+  products  Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id              String     @id @default(uuid())
+  name            String
+  categoryId      String
+  category        Category   @relation(fields: [categoryId], references: [id])
+  createdByUserId String?
+  createdByUser   User?      @relation("CreatedByUser", fields: [createdByUserId], references: [id])
+  createdAt       DateTime   @default(now())
+  listItems       ListItem[]
+
+  @@map("products")
+}
+
+model ShoppingList {
+  id        String     @id @default(uuid())
+  title     String     @default("Minha Lista de Feira")
+  ownerId   String
+  owner     User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  items     ListItem[]
+
+  @@map("shopping_lists")
+}
+
+model ListItem {
+  id         String       @id @default(uuid())
+  listId     String
+  list       ShoppingList @relation(fields: [listId], references: [id], onDelete: Cascade)
+  productId  String
+  product    Product      @relation(fields: [productId], references: [id])
+  isSelected Boolean      @default(false)
+  draftQty   Float?       @default(1)
+  draftPrice Float?
+
+  @@unique([listId, productId])
+  @@map("list_items")
+}
+
+model Market {
+  id        String            @id @default(uuid())
+  name      String            @unique
+  createdAt DateTime          @default(now())
+  purchases PurchaseHistory[]
+
+  @@map("markets")
+}
+
+model PurchaseHistory {
+  id           String         @id @default(uuid())
+  userId       String
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  marketId     String?
+  market       Market?        @relation(fields: [marketId], references: [id])
+  purchaseDate DateTime       @default(now())
+  totalAmount  Float
+  createdAt    DateTime       @default(now())
+  items        PurchaseItem[]
+
+  @@map("purchase_history")
+}
+
+model PurchaseItem {
+  id           String          @id @default(uuid())
+  purchaseId   String
+  purchase     PurchaseHistory @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
+  productName  String
+  categoryName String
+  quantity     Float
+  unitPrice    Float
+  subtotal     Float
+
+  @@map("purchase_items")
+}
+
