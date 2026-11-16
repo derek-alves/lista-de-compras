@@ -140,4 +140,26 @@ Para garantir que o código seja revisado com qualidade e atenção aos detalhes
 
 > ⚠️ **Atenção**: Se um Pull Request alterar mais de 50 arquivos, o check automático de governança falhará e o botão de Merge ficará **bloqueado**. Caso sua tarefa envolva muitas mudanças, quebre-a em 2 PRs menores e envie sequencialmente!
 
+---
+
+## 7. 🧪 Estratégia Gradual de CI & Testes Automatizados
+
+Para preparar você para o dia a dia de empresas de alto nível sem criar barreiras desnecessárias no começo, adotamos uma **Estratégia Gradual de Qualidade de Código**:
+
+### Nível 1: Compilação e Tipagem Obrigatórias (Desde o Dia 1 - Bloqueante)
+Em todo Pull Request, o GitHub verifica se o código compila perfeitamente:
+* `npm run build` no backend (NestJS) e no frontend (React + Vite).
+* Nenhum PR entra na `main` com erros de TypeScript (`tsc`), imports quebrados ou variáveis inexistentes.
+* **Se o build quebrar, o merge fica bloqueado.**
+
+### Nível 2: Testes Automatizados Graduais (`npm test`)
+* **Fase 1 — Educativa (Milestones 0 a 2)**:
+  * O objetivo aqui é aprender a sintaxe de testes (`describe`, `it`, `expect`, mocks) sem o estresse de travar a entrega.
+  * Nas tarefas de Usuários (#9), Formulários (#10) e Autenticação (#11), você escreverá seus primeiros testes unitários com Jest e Vitest como ambiente de aprendizado.
+  * O CI executa os testes de forma informativa, dando feedback amigável sem bloquear o merge.
+* **Fase 2 — Missão Crítica (Milestones 3 e 4 - Bloqueante no CI)**:
+  * A partir da finalização de compras (#21), o app passa a lidar com dinheiro, integridade financeira e transações no banco de dados.
+  * A partir deste ponto, **100% dos testes automatizados tornam-se bloqueantes no CI**. Nenhum PR de checkout financeiro ou histórico é aceito se os testes de rollback e cálculos quebrarem.
+
+
 

@@ -327,6 +327,18 @@ Você criará os dois componentes essenciais de entrada de dados do app: a barra
   * Requisição: `POST /api/users` com `{"name": "Carlos", "email": "carlos@email.com", "password": "senhaSegura123"}`.
 * Resposta: HTTP 201 Created com `{"id": "uuid-...", "name": "Carlos", "email": "carlos@email.com", "createdAt": "..."}`.
 
+* **Estratégia de Testes para esta Tarefa**:
+    🧪 Estratégia Gradual de Testes (Fase 1 - Educativa / Aprendizado)
+Nesta tarefa você escreverá seu primeiro teste unitário no backend (`apps/api/src/users/users.service.spec.ts`).
+
+* **O que você vai testar**:
+  1. Garantir que o método `createUser` criptografa a senha com `bcrypt` antes de salvar no banco.
+  2. Garantir que o campo `password` NUNCA seja retornado no objeto JSON de resposta.
+  3. Simular a tentativa de cadastrar um email já existente e verificar se o NestJS lança a exceção esperada (`ConflictException`).
+* **Como funciona o CI nesta fase**:
+  * O teste serve como seu laboratório de aprendizado para entender Jest e Mocks sem pressão.
+  * O CI exigirá a compilação do TypeScript obrigatória (`npm run build`), mas o teste unitário ainda não travará o merge caso você precise de ajuda ou feedback do mentor no PR.
+
 * **Passo a Passo Técnico de Execução (Checklist)**:
 * **Local**: `apps/api/src/users/` e `prisma/schema.prisma`
 - [ ] Configurar modelo `User` no Prisma (`id`, `name`, `email`, `password`, `createdAt`, `updatedAt`).
@@ -354,6 +366,17 @@ Você criará os dois componentes essenciais de entrada de dados do app: a barra
   * O usuário digita um email inválido `carlos@` -> O campo exibe em vermelho: *"Informe um email válido"*.
 * Ao preencher corretamente e clicar em "Criar Conta", o usuário é automaticamente redirecionado para a tela de login.
 
+* **Estratégia de Testes para esta Tarefa**:
+    🧪 Estratégia Gradual de Testes (Fase 1 - Educativa / Frontend)
+Nesta tarefa você criará um teste unitário simples para o schema de validação do Zod (`apps/web/src/schemas/register.schema.spec.ts`).
+
+* **O que você vai testar**:
+  1. Verificar se um formulário com email inválido (ex: `teste@`) é prontamente rejeitado pelo Zod.
+  2. Verificar se uma senha com menos de 6 caracteres dispara a mensagem de erro esperada.
+  3. Verificar se dados válidos e com confirmação de senha idêntica passam com sucesso.
+* **Por que começar testando schemas**:
+  * Testar regras puras do Zod é a forma mais leve e prazerosa de aprender testes no front (`vitest`), sem precisar lidar com complexidades de DOM ou renderização de telas!
+
 * **Passo a Passo Técnico de Execução (Checklist)**:
 * **Local**: `apps/web/src/pages/RegisterPage.tsx`
 - [ ] Criar esquema de validação Zod (`name`: min 2 chars, `email`: válido, `password`: min 6 chars).
@@ -379,6 +402,16 @@ Você criará os dois componentes essenciais de entrada de dados do app: a barra
 
 * **Cenário Prático (Exemplo Real)**:
   * Requisição: `POST /api/auth/login` com credenciais corretas -> Resposta HTTP 200 com Set-Cookie HttpOnly e dados básicos do usuário.
+
+* **Estratégia de Testes para esta Tarefa**:
+    🧪 Estratégia Gradual de Testes (Fase 1 - Educativa / Autenticação)
+Escrever testes unitários em `apps/api/src/auth/auth.service.spec.ts`.
+
+* **O que você vai testar**:
+  1. Verificar se o método `login` gera um token JWT válido assinado com a chave secreta.
+  2. Verificar se a tentativa de login com senha incorreta é bloqueada com `UnauthorizedException` (HTTP 401).
+* **Como funciona o CI nesta fase**:
+  * Você valida a lógica de autenticação com segurança. O CI continuará validando a compilação de toda a aplicação de forma bloqueante.
 
 * **Passo a Passo Técnico de Execução (Checklist)**:
 * **Local**: `apps/api/src/auth/`
@@ -642,6 +675,16 @@ Você criará os dois componentes essenciais de entrada de dados do app: a barra
   * Esvazia a lista ativa.
   * Devolve HTTP 201 com o ID do comprovante criado.
 
+* **Estratégia de Testes para esta Tarefa**:
+    🧪 Estratégia Gradual de Testes (Fase 2 - Missão Crítica / CI Bloqueante)
+⚠️ **Atenção: A partir desta tarefa, os testes tornam-se 100% OBRIGATÓRIOS E BLOQUEANTES no CI!**
+
+Como estamos lidando com dinheiro, finalização de compra e movimentação de estoque, uma falha no meio do processo deixaria dados órfãos ou corrompidos.
+* **O que você deve testar obrigatoriamente (`purchases.service.spec.ts`)**:
+  1. **Cenário de Sucesso**: Simular o checkout de 3 produtos -> garantir que o comprovante é criado, os itens vinculados e a lista de compras ativa é desocupada dentro da transação atômica (`prisma.$transaction`).
+  2. **Cenário de Falha / Rollback**: Simular um erro inesperado ao salvar o segundo item da compra e garantir que nenhuma tabela é alterada (rollback completo), preservando o carrinho intacto.
+* **Regra de Merge**: O Pull Request desta tarefa só poderá ser aprovado e mergeado na `main` se a suíte de testes passar com 100% de aprovação!
+
 * **Passo a Passo Técnico de Execução (Checklist)**:
 * **Local**: `apps/api/src/purchases/`
 - [ ] Criar DTO `CheckoutPurchaseDto` com data, mercado e array de itens comprados.
@@ -705,6 +748,17 @@ Você criará os dois componentes essenciais de entrada de dados do app: a barra
   ]
 }
 ```
+
+* **Estratégia de Testes para esta Tarefa**:
+    🧪 Estratégia Gradual de Testes (Fase 2 - Fórmulas Matemáticas Bloqueantes)
+⚠️ **Testes Obrigatórios e Bloqueantes no CI!**
+
+Erros de arredondamento ou divisão por zero em relatórios financeiros destroem a confiança do usuário no produto.
+* **O que você deve testar obrigatoriamente (`dashboard.service.spec.ts`)**:
+  1. **Cálculo de Médias**: Verificar se o total gasto e o ticket médio (`averageTicket`) calculam valores com 2 casas decimais sem dízimas infinitas.
+  2. **Proporção por Categoria**: Garantir que a soma das porcentagens de todas as categorias bata exatamente 100%.
+  3. **Usuário Novo**: Garantir que para um usuário sem compras cadastradas o sistema retorne zeros graciosamente, sem estourar erro 500.
+* **Regra de Merge**: Todos os testes matemáticos devem estar verdes no CI antes do merge.
 
 * **Passo a Passo Técnico de Execução (Checklist)**:
 * **Local**: `apps/api/src/dashboard/`
