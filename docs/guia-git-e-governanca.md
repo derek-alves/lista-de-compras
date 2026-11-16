@@ -127,3 +127,17 @@ git merge main
 ```
 Resolva eventuais conflitos no VS Code (se houver), teste a aplicação e dê `git push` novamente.
 
+---
+
+## 6. 🛑 Regra de Tamanho de PR: Limite Máximo de 50 Arquivos Alterados
+
+Para garantir que o código seja revisado com qualidade e atenção aos detalhes, o repositório adota um **limite estrito de no máximo 50 arquivos alterados por Pull Request**.
+
+### Por que PRs gigantes são proibidos?
+1. **Fadiga de Revisão**: Revisar um PR com 80 ou 100 arquivos faz com que bugs graves passem despercebidos.
+2. **Conflitos de Merge**: Quanto maior o PR, maior a chance de quebrar o trabalho do outro colega que está codando em paralelo.
+3. **Padrão de Mercado**: Empresas de alta maturidade valorizam *Vertical Slices* (entregas pequenas, atômicas e funcionais).
+
+> ⚠️ **Atenção**: Se um Pull Request alterar mais de 50 arquivos, o check automático de governança falhará e o botão de Merge ficará **bloqueado**. Caso sua tarefa envolva muitas mudanças, quebre-a em 2 PRs menores e envie sequencialmente!
+
+
