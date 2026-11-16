@@ -126,3 +126,4 @@ git checkout feat/sua-feature
 git merge main
 ```
 Resolva eventuais conflitos no VS Code (se houver), teste a aplicação e dê `git push` novamente.
+

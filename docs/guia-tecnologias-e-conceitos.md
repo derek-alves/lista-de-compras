@@ -109,3 +109,4 @@ O **JSON Web Token (JWT)** é um padrão para autenticação segura entre SPA (R
    * **Access Token**: Token JWT de curta duração (15 minutos) enviado no corpo da resposta para autenticar requisições no cabeçalho `Authorization: Bearer <token>`.
    * **Refresh Token**: Token de longa duração (7 dias) enviado em um **Cookie HttpOnly**.
 4. **Por que Cookie HttpOnly?** Porque scripts maliciosos em JavaScript no navegador (ataques XSS) **não conseguem ler cookies HttpOnly**, tornando impossível que um invasor roube o refresh token de sessão do usuário.
+

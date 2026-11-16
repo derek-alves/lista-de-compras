@@ -75,7 +75,7 @@ flowchart TD
 
 ### 🎨 Milestone 0: Design System & UI Kit Reutilizável (Component-First)
 
-Nesta fase inicial, os dois desenvolvedores extraem os componentes visuais diretamente do arquivo base [./lista-mercado.html](./lista-mercado.html) para componentes React reutilizáveis dentro de `apps/web/src/components/ui/`.
+Nesta fase inicial, os dois desenvolvedores extraem os componentes visuais diretamente do arquivo base [../lista-mercado.html](../lista-mercado.html) para componentes React reutilizáveis dentro de `apps/web/src/components/ui/`.
 
 #### 🧑‍💻 Pacote Dev A — Componentes Atômicos, Inputs e Feedback
 
@@ -84,10 +84,10 @@ Nesta fase inicial, os dois desenvolvedores extraem os componentes visuais diret
   * *Subtarefas Técnicas*:
     - [ ] Criar interface `ButtonProps` estendendo `React.ButtonHTMLAttributes<HTMLButtonElement>` com a prop `variant?: 'primary' | 'light' | 'clear-link' | 'danger-outline'` e `size?: 'sm' | 'md' | 'lg'`.
     - [ ] Implementar variantes de estilo via Tailwind:
-      * `primary`: fundo `--accent` (`bg-accent`), texto creme, cantos arredondados (`rounded-lg`), padding e transição de clique ([CSS linhas 210-215](./lista-mercado.html#L210-L215)).
-      * `light`: fundo creme, texto `--accent`, cantos arredondados (`rounded-lg`) ([CSS linhas 145-148](./lista-mercado.html#L145-L148) | [HTML linha 313](./lista-mercado.html#L313)).
-      * `clear-link`: fundo transparente, texto pêssego/suave, sublinhado ([CSS linhas 149-152](./lista-mercado.html#L149-L152) | [HTML linha 310](./lista-mercado.html#L310)).
-      * `danger-outline`: borda 1px `--accent`, texto `--accent`, fundo transparente ([CSS linhas 256-258](./lista-mercado.html#L256-L258) | [JS linha 621](./lista-mercado.html#L621)).
+      * `primary`: fundo `--accent` (`bg-accent`), texto creme, cantos arredondados (`rounded-lg`), padding e transição de clique ([CSS linhas 210-215](../lista-mercado.html#L210-L215)).
+      * `light`: fundo creme, texto `--accent`, cantos arredondados (`rounded-lg`) ([CSS linhas 145-148](../lista-mercado.html#L145-L148) | [HTML linha 313](../lista-mercado.html#L313)).
+      * `clear-link`: fundo transparente, texto pêssego/suave, sublinhado ([CSS linhas 149-152](../lista-mercado.html#L149-L152) | [HTML linha 310](../lista-mercado.html#L310)).
+      * `danger-outline`: borda 1px `--accent`, texto `--accent`, fundo transparente ([CSS linhas 256-258](../lista-mercado.html#L256-L258) | [JS linha 621](../lista-mercado.html#L621)).
     - [ ] Adicionar suporte ao estado `disabled` com redução de opacidade (`disabled:opacity-40 disabled:cursor-not-allowed`).
     - [ ] Exportar o componente utilizando `React.forwardRef`.
 
@@ -95,32 +95,32 @@ Nesta fase inicial, os dois desenvolvedores extraem os componentes visuais diret
   * *Local de criação*: `apps/web/src/components/ui/SearchBar.tsx` e `apps/web/src/components/ui/DateRowInput.tsx`
   * *Subtarefas Técnicas*:
     - [ ] Criar `SearchBar`:
-      - [ ] Campo com fundo marfim (`bg-[#fffdf7]`), borda 1px `border-line`, cantos `rounded-xl` (10px) e texto `text-ink` ([CSS linhas 84-94](./lista-mercado.html#L84-L94) | [HTML linhas 283-285](./lista-mercado.html#L283-L285)).
+      - [ ] Campo com fundo marfim (`bg-[#fffdf7]`), borda 1px `border-line`, cantos `rounded-xl` (10px) e texto `text-ink` ([CSS linhas 84-94](../lista-mercado.html#L84-L94) | [HTML linhas 283-285](../lista-mercado.html#L283-L285)).
       - [ ] Adicionar ícone de lupa da biblioteca `lucide-react` à esquerda e botão de limpar texto à direita (se houver texto digitado).
       - [ ] Aceitar prop `onSearchChange: (value: string) => void`.
     - [ ] Criar `DateRowInput`:
-      - [ ] Card flex horizontal com fundo `#fffdf7`, borda suave e cantos arredondados ([CSS linhas 155-164](./lista-mercado.html#L155-L164) | [HTML linhas 291-294](./lista-mercado.html#L291-L294)).
+      - [ ] Card flex horizontal com fundo `#fffdf7`, borda suave e cantos arredondados ([CSS linhas 155-164](../lista-mercado.html#L155-L164) | [HTML linhas 291-294](../lista-mercado.html#L291-L294)).
       - [ ] Label em caixa alta "DATA DA COMPRA" e input `type="date"` sem borda nativa, formatado em `font-mono`.
       - [ ] Valor inicial preenchido automaticamente com a data de hoje (`new Date().toISOString().slice(0,10)`).
 
 * **[ISSUE-00C] Componentes de Seleção: `ProductChip` e `CategoryDot`**
   * *Local de criação*: `apps/web/src/components/ui/ProductChip.tsx`
   * *Subtarefas Técnicas*:
-    - [ ] Criar componente `CategoryDot`: bolinha colorida redonda de 6px (`w-1.5 h-1.5 rounded-full`) tingida com a cor da categoria recebida via prop ([CSS linha 129](./lista-mercado.html#L129)).
+    - [ ] Criar componente `CategoryDot`: bolinha colorida redonda de 6px (`w-1.5 h-1.5 rounded-full`) tingida com a cor da categoria recebida via prop ([CSS linha 129](../lista-mercado.html#L129)).
     - [ ] Criar componente `ProductChip`:
-      - [ ] Estilo base: pílula arredondada (`rounded-full`), borda 1.5px `border-line`, fundo marfim `#fffdf7`, padding horizontal e efeito tátil de clique (`active:scale-95`) ([CSS linhas 109-131](./lista-mercado.html#L109-L131)).
-      - [ ] Estado `selected`: quando `isSelected === true`, preencher o fundo com a cor da categoria, mudar o texto para creme `#fff9ef`, aumentar o peso da fonte para negrito e mudar a cor do dot interno para branco ([JS linhas 400-406](./lista-mercado.html#L400-L406)).
+      - [ ] Estilo base: pílula arredondada (`rounded-full`), borda 1.5px `border-line`, fundo marfim `#fffdf7`, padding horizontal e efeito tátil de clique (`active:scale-95`) ([CSS linhas 109-131](../lista-mercado.html#L109-L131)).
+      - [ ] Estado `selected`: quando `isSelected === true`, preencher o fundo com a cor da categoria, mudar o texto para creme `#fff9ef`, aumentar o peso da fonte para negrito e mudar a cor do dot interno para branco ([JS linhas 400-406](../lista-mercado.html#L400-L406)).
       - [ ] Aceitar props: `name: string`, `categoryColor: string`, `isSelected: boolean`, `onClick: () => void`.
 
 * **[ISSUE-00D] Feedback e Mensagens: `Toast` e `EmptyState`**
   * *Local de criação*: `apps/web/src/components/ui/Toast.tsx` e `apps/web/src/components/ui/EmptyState.tsx`
   * *Subtarefas Técnicas*:
     - [ ] Criar `Toast`:
-      - [ ] Notificação flutuante fixa na parte inferior centralizada (`fixed left-1/2 -translate-x-1/2 bottom-24`) ([CSS linhas 260-265](./lista-mercado.html#L260-L265)).
+      - [ ] Notificação flutuante fixa na parte inferior centralizada (`fixed left-1/2 -translate-x-1/2 bottom-24`) ([CSS linhas 260-265](../lista-mercado.html#L260-L265)).
       - [ ] Fundo escuro `--ink`, texto creme `--paper`, cantos `rounded-lg`, z-index 50 e transição suave de opacidade e subida (`translateY`).
-      - [ ] Temporizador automático de 2 segundos para auto-dismiss ([JS linhas 374-379](./lista-mercado.html#L374-L379)).
+      - [ ] Temporizador automático de 2 segundos para auto-dismiss ([JS linhas 374-379](../lista-mercado.html#L374-L379)).
     - [ ] Criar `EmptyState`:
-      - [ ] Container com texto centralizado, cor suave `text-ink-soft`, padding generoso (40px) e entrelinha agradável ([CSS linhas 165-168](./lista-mercado.html#L165-L168) | [HTML linha 451](./lista-mercado.html#L451)).
+      - [ ] Container com texto centralizado, cor suave `text-ink-soft`, padding generoso (40px) e entrelinha agradável ([CSS linhas 165-168](../lista-mercado.html#L165-L168) | [HTML linha 451](../lista-mercado.html#L451)).
       - [ ] Suportar prop `message: React.ReactNode` ou `children`.
 
 ---
@@ -130,18 +130,18 @@ Nesta fase inicial, os dois desenvolvedores extraem os componentes visuais diret
 * **[ISSUE-00E] Estrutura e Navegação: `AppHeader`, `AppContainer` e `TabsNav`**
   * *Local de criação*: `apps/web/src/components/ui/AppHeader.tsx` e `apps/web/src/components/ui/TabsNav.tsx`
   * *Subtarefas Técnicas*:
-    - [ ] Criar `AppContainer`: container que limita a largura a 520px centralizado na tela (`max-w-[520px] mx-auto min-h-screen flex flex-col pb-24`) ([CSS linha 38](./lista-mercado.html#L38)).
-    - [ ] Criar `AppHeader`: barra fixa no topo (`sticky top-0 z-20`), fundo verde `--awning`, título em fonte `font-serif` "🧺 Feira & Cia" e slogan em itálico "nunca mais esquece nada no mercado" ([CSS linhas 40-58](./lista-mercado.html#L40-L58) | [HTML linhas 270-273](./lista-mercado.html#L270-L273)).
+    - [ ] Criar `AppContainer`: container que limita a largura a 520px centralizado na tela (`max-w-[520px] mx-auto min-h-screen flex flex-col pb-24`) ([CSS linha 38](../lista-mercado.html#L38)).
+    - [ ] Criar `AppHeader`: barra fixa no topo (`sticky top-0 z-20`), fundo verde `--awning`, título em fonte `font-serif` "🧺 Feira & Cia" e slogan em itálico "nunca mais esquece nada no mercado" ([CSS linhas 40-58](../lista-mercado.html#L40-L58) | [HTML linhas 270-273](../lista-mercado.html#L270-L273)).
     - [ ] Criar `TabsNav`:
-      - [ ] Menu flex horizontal com 3 abas: "Lista", "Compra", "Painel" ([HTML linhas 273-277](./lista-mercado.html#L273-L277)).
+      - [ ] Menu flex horizontal com 3 abas: "Lista", "Compra", "Painel" ([HTML linhas 273-277](../lista-mercado.html#L273-L277)).
       - [ ] Borda superior arredondada (`rounded-t-lg`), fundo `--awning-light` com opacidade reduzida nas abas inativas.
-      - [ ] Aba ativa: fundo `--paper`, cor do texto `--awning` e opacidade total ([CSS linhas 59-77](./lista-mercado.html#L59-L77) | [JS linhas 643-656](./lista-mercado.html#L643-L656)).
+      - [ ] Aba ativa: fundo `--paper`, cor do texto `--awning` e opacidade total ([CSS linhas 59-77](../lista-mercado.html#L59-L77) | [JS linhas 643-656](../lista-mercado.html#L643-L656)).
       - [ ] Disparar callback `activeTab: string` e `onTabChange: (tab: string) => void`.
 
 * **[ISSUE-00F] Cabeçalho de Categoria: `CategoryHeader`**
   * *Local de criação*: `apps/web/src/components/ui/CategoryHeader.tsx`
   * *Subtarefas Técnicas*:
-    - [ ] Criar cabeçalho de seção flex com ícone emoji e título em fonte `font-serif` ([CSS linhas 95-108](./lista-mercado.html#L95-L108) | [JS linhas 389-395](./lista-mercado.html#L389-L395)).
+    - [ ] Criar cabeçalho de seção flex com ícone emoji e título em fonte `font-serif` ([CSS linhas 95-108](../lista-mercado.html#L95-L108) | [JS linhas 389-395](../lista-mercado.html#L389-L395)).
     - [ ] Adicionar barra vertical lateral esquerda de 5px (`border-l-[5px]`) tingida dinamicamente com a cor da categoria recebida via prop (`colorVar`).
     - [ ] Aceitar props: `name: string`, `icon: string`, `colorVar: string`.
 
@@ -149,26 +149,26 @@ Nesta fase inicial, os dois desenvolvedores extraem os componentes visuais diret
   * *Local de criação*: `apps/web/src/components/ui/FloatBar.tsx` e `apps/web/src/components/ui/ReceiptBar.tsx`
   * *Subtarefas Técnicas*:
     - [ ] Criar `FloatBar`:
-      - [ ] Barra fixa no rodapé (`fixed bottom-0 left-0 right-0 max-w-[520px] mx-auto z-30`), fundo vermelho `--accent`, texto creme e sombra forte ([CSS linhas 132-152](./lista-mercado.html#L132-L152)).
+      - [ ] Barra fixa no rodapé (`fixed bottom-0 left-0 right-0 max-w-[520px] mx-auto z-30`), fundo vermelho `--accent`, texto creme e sombra forte ([CSS linhas 132-152](../lista-mercado.html#L132-L152)).
       - [ ] Lado esquerdo: botão de "limpar" (`clear-link`) + contador textual de itens selecionados.
       - [ ] Lado direito: botão claro "Iniciar compra →" (`Button variant="light"`).
       - [ ] Esconder a barra automaticamente se o contador de itens for igual a 0.
     - [ ] Criar `ReceiptBar`:
-      - [ ] Barra fixa no rodapé em fundo verde escuro `--awning`, z-index 30 e acabamento serrilhado no topo via classe `.receipt-torn` ([CSS linhas 190-216](./lista-mercado.html#L190-L216)).
+      - [ ] Barra fixa no rodapé em fundo verde escuro `--awning`, z-index 30 e acabamento serrilhado no topo via classe `.receipt-torn` ([CSS linhas 190-216](../lista-mercado.html#L190-L216)).
       - [ ] Linha superior: texto em caixa alta "TOTAL DA COMPRA" e valor monetário formatado grande em `font-mono` (`text-2xl font-bold`).
-      - [ ] Botão inferior de largura total (100%) "Finalizar compra" em vermelho `--accent`, desabilitado caso o total seja zero ([JS linhas 518-532](./lista-mercado.html#L518-L532)).
+      - [ ] Botão inferior de largura total (100%) "Finalizar compra" em vermelho `--accent`, desabilitado caso o total seja zero ([JS linhas 518-532](../lista-mercado.html#L518-L532)).
 
 * **[ISSUE-00H] Dashboards: `KpiCard`, `CategoryProgressBar` e `PurchaseHistoryCard`**
   * *Local de criação*: `apps/web/src/components/ui/KpiCard.tsx`, `CategoryProgressBar.tsx` e `PurchaseHistoryCard.tsx`
   * *Subtarefas Técnicas*:
     - [ ] Criar `KpiCard`:
-      - [ ] Card com fundo `#fffdf7`, borda `border-line`, cantos arredondados (10px) e padding ([CSS linhas 218-225](./lista-mercado.html#L218-L225)).
+      - [ ] Card com fundo `#fffdf7`, borda `border-line`, cantos arredondados (10px) e padding ([CSS linhas 218-225](../lista-mercado.html#L218-L225)).
       - [ ] Label em caixa alta suave `text-[11px] text-ink-soft` e valor numérico em `font-mono text-xl font-bold text-awning`.
     - [ ] Criar `CategoryProgressBar`:
-      - [ ] Linha flex com bolinha colorida, nome da categoria e valor em R$ monoespaçado ([CSS linhas 230-237](./lista-mercado.html#L230-L237)).
+      - [ ] Linha flex com bolinha colorida, nome da categoria e valor em R$ monoespaçado ([CSS linhas 230-237](../lista-mercado.html#L230-L237)).
       - [ ] Barra de trilha com fundo `--paper-dark`, altura de 9px e preenchimento interno com largura percentual proporcional (`style={{ width: `${percent}%`, backgroundColor: color }}`).
     - [ ] Criar `PurchaseHistoryCard`:
-      - [ ] Card sanfonado usando `<details>` e `<summary>` nativos ou estado React ([CSS linhas 238-259](./lista-mercado.html#L238-L259)).
+      - [ ] Card sanfonado usando `<details>` e `<summary>` nativos ou estado React ([CSS linhas 238-259](../lista-mercado.html#L238-L259)).
       - [ ] Cabeçalho: data formatada (pt-BR), contagem de itens e valor total em vermelho `--accent`.
       - [ ] Conteúdo expandido: lista pontilhada de itens comprados (`nome × qtd` à esquerda e `subtotal` à direita) + botão de exclusão (`Button variant="danger-outline"`).
 
@@ -254,7 +254,7 @@ Nesta fase inicial, os dois desenvolvedores extraem os componentes visuais diret
   * *Camada*: Prisma (`prisma/seed.ts`)
   * *Subtarefas Técnicas*:
     - [ ] Criar o arquivo `apps/api/prisma/seed.ts`.
-    - [ ] Extrair os dados das 10 categorias e os mais de 80 produtos pré-existentes do protótipo base ([linhas 323-334](./lista-mercado.html#L323-L334)).
+    - [ ] Extrair os dados das 10 categorias e os mais de 80 produtos pré-existentes do protótipo base ([linhas 323-334](../lista-mercado.html#L323-L334)).
     - [ ] Escrever rotina idempotente usando `prisma.category.upsert` e `prisma.product.upsert` (garantindo que rodar o seed múltiplas vezes não duplique registros).
     - [ ] Adicionar o script `"prisma": { "seed": "ts-node prisma/seed.ts" }` no `package.json` da API.
     - [ ] Executar o comando `npx prisma db seed` e validar a população das tabelas através do Prisma Studio (`npm run prisma:studio`).
@@ -295,7 +295,7 @@ Nesta fase inicial, os dois desenvolvedores extraem os componentes visuais diret
     - [ ] Conectar o `ListContext` com o componente `ProductChip`: o chip lê o estado do contexto para saber se deve renderizar ativo ou inativo.
     - [ ] Conectar o `ListContext` com o componente `FloatBar`:
       * Exibir a contagem real de itens (`Object.keys(selectedItems).length`).
-      * **Correção do Bug do Protótipo**: Vincular o botão "Limpar" à função `clearSelection()`, garantindo que tanto os chips da tela quanto a barra flutuante sejam limpos sincronizadamente ([referência do bug original: linhas 432-437](./lista-mercado.html#L432-L437)).
+      * **Correção do Bug do Protótipo**: Vincular o botão "Limpar" à função `clearSelection()`, garantindo que tanto os chips da tela quanto a barra flutuante sejam limpos sincronizadamente ([referência do bug original: linhas 432-437](../lista-mercado.html#L432-L437)).
       * Vincular o botão "Iniciar compra →" para navegar para a aba de Compra.
 
 * **[ISSUE-09] Full-stack: Persistência da Lista Ativa no Backend**
@@ -320,7 +320,7 @@ Nesta fase inicial, os dois desenvolvedores extraem os componentes visuais diret
 * **[ISSUE-10] Frontend: Aba de Compra (Carrinho em Tempo Real)**
   * *Camada*: React
   * *Subtarefas Técnicas*:
-    - [ ] Criar o componente `CartItemRow.tsx` baseado nas linhas 169-189 do protótipo ([referência original](./lista-mercado.html#L169-L189)):
+    - [ ] Criar o componente `CartItemRow.tsx` baseado nas linhas 169-189 do protótipo ([referência original](../lista-mercado.html#L169-L189)):
       * Topo: bolinha colorida + nome do produto + botão `✕` de remoção.
       * Campos: Quantidade (com step `0.01` e inputmode decimal) e Preço Unitário em R$.
       * Rodapé da linha: subtotal calculado em tempo real em fonte `font-mono` (`quantidade * valorUnitario`).
@@ -362,12 +362,12 @@ Nesta fase inicial, os dois desenvolvedores extraem os componentes visuais diret
       - [ ] 2. Criar o registro pai em `PurchaseHistory` com o total recalculado e a data da compra.
       - [ ] 3. Criar os registros filhos em `PurchaseItem` armazenando o nome do produto e da categoria para manter histórico estático imutável.
       - [ ] 4. Esvaziar os itens da lista ativa do usuário em `ListItem`.
-    - [ ] Em caso de falha em qualquer etapa, a transação deve sofrer rollback automático sem deixar dados órfãos ([lógica original: linhas 534-570](./lista-mercado.html#L534-L570)).
+    - [ ] Em caso de falha em qualquer etapa, a transação deve sofrer rollback automático sem deixar dados órfãos ([lógica original: linhas 534-570](../lista-mercado.html#L534-L570)).
 
 * **[ISSUE-14] Frontend: Sincronização Cruzada de Itens (Correção de Bug)**
   * *Camada*: React
   * *Subtarefas Técnicas*:
-    - [ ] **Correção do Bug do Protótipo**: No componente `CartItemRow`, ao clicar no botão `✕` para remover um produto do carrinho, remover o item imediatamente do `ListContext` ([referência do bug original: linhas 477-486](./lista-mercado.html#L477-L486)).
+    - [ ] **Correção do Bug do Protótipo**: No componente `CartItemRow`, ao clicar no botão `✕` para remover um produto do carrinho, remover o item imediatamente do `ListContext` ([referência do bug original: linhas 477-486](../lista-mercado.html#L477-L486)).
     - [ ] Validar que ao voltar para a aba Lista, o chip correspondente foi desmarcado e o contador da `FloatBar` foi reduzido.
     - [ ] Ao clicar em "Finalizar compra" com sucesso:
       - [ ] Exibir o componente `Toast` com a mensagem: *"Compra salva com sucesso! Total: R$ ..."*.
@@ -391,7 +391,7 @@ Nesta fase inicial, os dois desenvolvedores extraem os componentes visuais diret
       * Total geral gasto: somar `totalAmount` de todas as compras do usuário via `prisma.purchaseHistory.aggregate({ _sum: { totalAmount: true } })`.
       * Total de compras: contagem de compras via `_count`.
       * Média por compra: cálculo do ticket médio via `_avg`.
-      * Gastos por categoria: agrupar os `PurchaseItem` somando os subtotais por categoria ([cálculos originais: linhas 574-586](./lista-mercado.html#L574-L586)).
+      * Gastos por categoria: agrupar os `PurchaseItem` somando os subtotais por categoria ([cálculos originais: linhas 574-586](../lista-mercado.html#L574-L586)).
       * Identificar a categoria com maior impacto financeiro acumulado.
 
 * **[ISSUE-16] Frontend: Painel de Métricas Conectando os KpiCards**
@@ -403,7 +403,7 @@ Nesta fase inicial, os dois desenvolvedores extraem os componentes visuais diret
       2. Compras Feitas (contagem).
       3. Média por Compra (R$).
       4. Categoria que Mais Pesa (nome da categoria).
-    - [ ] Renderizar a lista ordenada de categorias utilizando o componente `CategoryProgressBar` ([layout original: linhas 587-606](./lista-mercado.html#L587-L606)).
+    - [ ] Renderizar a lista ordenada de categorias utilizando o componente `CategoryProgressBar` ([layout original: linhas 587-606](../lista-mercado.html#L587-L606)).
     - [ ] Adicionar filtro de data (início e fim) recalculando os dados em tempo real.
     - [ ] Exibir o componente `EmptyState` se o usuário ainda não tiver realizado nenhuma compra.
 
@@ -419,7 +419,7 @@ Nesta fase inicial, os dois desenvolvedores extraem os componentes visuais diret
       * Endpoint `DELETE /api/purchases/:id`: excluir uma compra específica do histórico.
       * Endpoint `PATCH /api/purchases/:id/date`: permitir alterar a data da compra pós-finalizada (requisito levantado na análise).
     - [ ] No frontend (`PainelPage.tsx`):
-      * Renderizar a lista de compras passadas utilizando o componente `PurchaseHistoryCard` da Milestone 0 ([linhas 609-633](./lista-mercado.html#L609-L633)).
+      * Renderizar a lista de compras passadas utilizando o componente `PurchaseHistoryCard` da Milestone 0 ([linhas 609-633](../lista-mercado.html#L609-L633)).
       * Adicionar modal de confirmação antes de excluir a compra ("Tem certeza que deseja apagar esta compra?").
       * Adicionar botão de editar data da compra atualizando a lista cronologicamente.
 

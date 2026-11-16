@@ -83,3 +83,4 @@ export function formatDateBR(isoDate?: string | Date): string {
   if (isNaN(d.getTime())) return '—';
   return d.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
 }
+
