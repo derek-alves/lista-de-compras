@@ -1,0 +1,7 @@
+# ==============================================================
+# CODEOWNERS - Feira & Cia
+# ==============================================================
+# Derek (@derek-alves) é o revisor obrigatório de todo o repositório.
+# Nenhum Pull Request poderá ser mergeado sem a sua aprovação explícita.
+
+* @derek-alves
