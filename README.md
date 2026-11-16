@@ -85,3 +85,4 @@ Você pode rodar as aplicações em terminais separados a partir da raiz:
    * Preencha o template de PR detalhando o que foi feito e como testar.
 3. **Code Review Obrigatório**:
    * Seu colega de equipe deve revisar e aprovar o código antes do merge.
+

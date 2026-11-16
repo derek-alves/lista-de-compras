@@ -19,3 +19,4 @@ Resolve a issue: #
 - [ ] Não há `console.log` desnecessários ou código comentado.
 - [ ] As tipagens TypeScript foram respeitadas (sem uso de `any`).
 - [ ] Revisado e aprovado pelo parceiro de equipe.
+
