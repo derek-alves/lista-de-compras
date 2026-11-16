@@ -1,0 +1,24 @@
+FROM node:22-alpine
+
+WORKDIR /app
+
+# Install dependencies needed for node-gyp or alpine utilities if needed
+RUN apk add --no-cache openssl
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies inside the container
+RUN npm install --legacy-peer-deps
+
+# Copy Prisma schema and generate client
+COPY prisma ./prisma/
+RUN npx prisma generate
+
+# Copy the rest of the source code
+COPY . .
+
+EXPOSE 3000
+
+# Start NestJS with hot-reload
+CMD ["npm", "run", "start:dev"]

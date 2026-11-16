@@ -4,63 +4,40 @@
 
 ---
 
+## ⚡ Inicialização Rápida em 1 Único Comando (Docker)
+
+Se você tem o **Docker** instalado, você não precisa instalar Node.js nem rodar múltiplos terminais. Basta executar na raiz do projeto:
+
+```bash
+docker compose up --build
+```
+*(ou se preferir: `npm run docker:dev`)*
+
+O Docker irá automaticamente:
+1. Subir o banco de dados **PostgreSQL 16**.
+2. Baixar a imagem do Node 22, instalar todas as dependências da API, gerar o cliente Prisma e iniciar o **NestJS** com hot-reload na porta **3000**.
+3. Instalar as dependências do frontend e iniciar o **React (Vite)** com hot-reload na porta **5173**.
+4. Qualquer linha de código que você editar no VS Code atualizará instantaneamente dentro do container!
+
+### URLs da Aplicação:
+* 🌐 **Frontend (React)**: [http://localhost:5173](http://localhost:5173)
+* ⚙️ **Backend API (NestJS)**: [http://localhost:3000/api](http://localhost:3000/api)
+* 📚 **Documentação Interativa (Swagger)**: [http://localhost:3000/api/docs](http://localhost:3000/api/docs)
+
+---
+
 ## 🏛️ Arquitetura do Projeto
 
-O projeto é estruturado como um **Monorepo TypeScript**:
-
 * **`apps/api` (Backend)**:
-  * **NestJS** (Arquitetura corporativa, Injeção de Dependência, DTOs e Decorators)
+  * **NestJS** (Injeção de Dependência, DTOs, Decorators e Clean Architecture)
   * **Prisma ORM** + **PostgreSQL 16**
   * **Swagger/OpenAPI** em `/api/docs`
   * Validação global via `class-validator` e `class-transformer`
 * **`apps/web` (Frontend)**:
   * **React 19** + **Vite** + **TypeScript**
-  * **Tailwind CSS v4** com a paleta de cores temática do Feira & Cia
+  * **Tailwind CSS v4** com paleta temática
   * **Axios** com interceptor automático para renovação de token
   * **Lucide React** para ícones modernos
-
----
-
-## 🚀 Como Executar o Projeto Localmente
-
-### 1. Pré-requisitos
-* **Node.js** (v18+)
-* **Docker & Docker Compose** (para o PostgreSQL)
-
-### 2. Configurar o Ambiente
-Copie o arquivo de exemplo de variáveis de ambiente:
-```bash
-cp .env.example .env
-```
-
-### 3. Subir o Banco de Dados (Docker)
-Inicie o container do PostgreSQL em segundo plano:
-```bash
-npm run docker:up
-```
-
-### 4. Instalar Dependências e Gerar o Prisma Client
-```bash
-npm install
-npm run prisma:generate
-```
-
-### 5. Iniciar as Aplicações em Desenvolvimento
-
-Você pode rodar as aplicações em terminais separados a partir da raiz:
-
-* **Terminal 1 - Backend (NestJS)**:
-  ```bash
-  npm run dev:api
-  ```
-  * A API estará rodando em: `http://localhost:3000/api`
-  * O Swagger interativo estará em: `http://localhost:3000/api/docs`
-
-* **Terminal 2 - Frontend (React)**:
-  ```bash
-  npm run dev:web
-  ```
-  * A aplicação web estará rodando em: `http://localhost:5173`
 
 ---
 
@@ -68,12 +45,12 @@ Você pode rodar as aplicações em terminais separados a partir da raiz:
 
 | Comando | Descrição |
 | :--- | :--- |
-| `npm run dev:api` | Inicia o NestJS em modo de desenvolvimento (com watch/hot-reload) |
-| `npm run dev:web` | Inicia o frontend Vite em modo de desenvolvimento |
-| `npm run build` | Compila o backend e o frontend para produção |
+| `docker compose up --build` | **(Recomendado)** Sobe Banco, Backend e Frontend juntos com hot-reload |
+| `docker compose down` | Para todos os containers do projeto |
+| `docker compose down -v` | Para os containers e reseta o banco de dados (limpa volumes) |
+| `npm run dev:api` | Roda apenas o backend localmente no terminal |
+| `npm run dev:web` | Roda apenas o frontend localmente no terminal |
 | `npm run prisma:studio` | Abre a interface visual do Prisma para explorar o banco |
-| `npm run docker:up` | Sobe o container do banco PostgreSQL |
-| `npm run docker:down` | Para e remove os containers Docker |
 
 ---
 
@@ -85,4 +62,3 @@ Você pode rodar as aplicações em terminais separados a partir da raiz:
    * Preencha o template de PR detalhando o que foi feito e como testar.
 3. **Code Review Obrigatório**:
    * Seu colega de equipe deve revisar e aprovar o código antes do merge.
-

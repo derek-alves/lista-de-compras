@@ -7,17 +7,18 @@
     "apps/*"
   ],
   "scripts": {
+    "docker:dev": "docker compose up --build",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:clean": "docker compose down -v",
+    "docker:logs": "docker compose logs -f",
     "dev:api": "npm run start:dev --workspace=apps/api",
     "dev:web": "npm run dev --workspace=apps/web",
     "build:api": "npm run build --workspace=apps/api",
     "build:web": "npm run build --workspace=apps/web",
     "build": "npm run build:api && npm run build:web",
     "prisma:generate": "npm run prisma --workspace=apps/api -- generate",
-    "prisma:studio": "npx prisma studio --schema=apps/api/prisma/schema.prisma",
-    "docker:up": "docker compose up -d",
-    "docker:down": "docker compose down",
-    "docker:logs": "docker compose logs -f"
+    "prisma:studio": "npx prisma studio --schema=apps/api/prisma/schema.prisma"
   },
   "devDependencies": {}
 }
-

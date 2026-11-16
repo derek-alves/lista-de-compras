@@ -9,10 +9,14 @@ export default defineConfig({
     tailwindcss(),
   ],
   server: {
+    host: true,
     port: 5173,
+    watch: {
+      usePolling: true,
+    },
     proxy: {
       '/api': {
-        target: 'http://localhost:3000',
+        target: process.env.VITE_API_URL || 'http://api:3000',
         changeOrigin: true,
       },
     },

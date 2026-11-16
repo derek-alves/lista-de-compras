@@ -1,4 +1,5 @@
 services:
+  # 1. Banco de Dados PostgreSQL
   postgres:
     image: postgres:16-alpine
     container_name: feira-postgres
@@ -16,8 +17,55 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - feira-network
+
+  # 2. Backend NestJS (com Hot-Reload)
+  api:
+    container_name: feira-api
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile.dev
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      DATABASE_URL: "postgresql://${POSTGRES_USER:-feira_admin}:${POSTGRES_PASSWORD:-feira_secret_123}@postgres:5432/${POSTGRES_DB:-feira_db}?schema=public"
+      JWT_SECRET: ${JWT_SECRET:-feira_cia_super_secret_jwt_key_2026_dev}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-feira_cia_super_secret_refresh_key_2026_dev}
+    volumes:
+      - ./apps/api:/app
+      - /app/node_modules
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - feira-network
+
+  # 3. Frontend React Vite (com Hot-Reload)
+  web:
+    container_name: feira-web
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile.dev
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_URL: "http://localhost:3000/api"
+    volumes:
+      - ./apps/web:/app
+      - /app/node_modules
+    depends_on:
+      - api
+    networks:
+      - feira-network
 
 volumes:
   postgres_data:
     driver: local
 
+networks:
+  feira-network:
+    driver: bridge
