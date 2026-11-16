@@ -15,8 +15,10 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+    it('should return api health status', () => {
+      const res = appController.getStatus();
+      expect(res.status).toBe('online');
+      expect(res.project).toBe('Feira & Cia API');
     });
   });
 });

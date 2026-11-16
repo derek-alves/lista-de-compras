@@ -1,0 +1,72 @@
+name: CI & Quality Gate
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [main]
+
+jobs:
+  # 1. Trava de Governança: Limite máximo de 50 arquivos alterados por PR
+  pr-size-check:
+    name: "Governança: Limite de 50 Arquivos"
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validar contagem de arquivos alterados
+        run: |
+          CHANGED_FILES=${{ github.event.pull_request.changed_files }}
+          echo "Total de arquivos alterados no PR: $CHANGED_FILES"
+          if [ "$CHANGED_FILES" -gt 50 ]; then
+            echo "::error::❌ Este Pull Request altera $CHANGED_FILES arquivos, ultrapassando o limite de 50. Por favor, divida as alterações em PRs menores (vertical slices)."
+            exit 1
+          fi
+          echo "✅ PR aprovado no limite de governança (<= 50 arquivos)."
+
+  # 2. Compilação e Verificação de Tipos TypeScript (Obrigatório e Bloqueante)
+  build-and-typecheck:
+    name: "Build & Typecheck (NestJS + Vite)"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Instalar dependências
+        run: npm ci --legacy-peer-deps
+
+      - name: Gerar Prisma Client
+        run: npx prisma generate --schema=apps/api/prisma/schema.prisma
+
+      - name: Compilar Backend e Frontend (TypeScript + Vite)
+        run: npm run build
+
+  # 3. Suíte de Testes Automatizados (Estratégia Gradual)
+  unit-tests:
+    name: "Testes Automatizados (Jest & Vitest)"
+    needs: build-and-typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Instalar dependências
+        run: npm ci --legacy-peer-deps
+
+      - name: Gerar Prisma Client
+        run: npx prisma generate --schema=apps/api/prisma/schema.prisma
+
+      - name: Executar Testes Unitários
+        run: npm test
