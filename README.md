@@ -4,6 +4,16 @@
 
 ---
 
+## 📚 Guias de Estudo e Documentações (Wiki)
+
+Consulte os guias detalhados criados para guiar o desenvolvimento:
+
+* 📋 **[Plano de Engenharia & Backlog de Tarefas](docs/plano-projeto-feira-e-cia.md)**: Todas as 22 issues detalhadas com checklists passo a passo, contratos de API e divisão pareada (Dev A vs Dev B).
+* 🌿 **[Guia de Git, Branches, Commits e Pull Requests](docs/guia-git-e-governanca.md)**: Padrão de branches (`feat/`, `fix/`), Conventional Commits e passo a passo de Code Review.
+* 🧠 **[Guia de Tecnologias, Conceitos e Arquitetura](docs/guia-tecnologias-e-conceitos.md)**: Explicação direta sobre NestJS, Prisma, Swagger, Tailwind, Docker, React, Zod e JWT.
+
+---
+
 ## 🚀 Como Executar o Projeto
 
 Escolha a forma que achar mais conveniente:
@@ -126,3 +136,4 @@ Todos os comandos podem ser executados diretamente da raiz do monorepo:
    * Cole prints, evidências dos testes do Swagger e passos para testar.
 4. **Code Review Obrigatório**:
    * O colega de equipe deve revisar o código, tirar dúvidas e aprovar o PR antes de realizar o merge.
+   * O proprietário (@derek-alves) é o Code Owner obrigatório para o merge final.
