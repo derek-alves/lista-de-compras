@@ -11,7 +11,7 @@ As etapas fundamentais de infraestrutura, arquitetura e governança já foram **
 * ✅ **Monorepo TypeScript**: Workspaces `/apps/api` e `/apps/web` configurados.
 * ✅ **Infraestrutura Docker**: PostgreSQL 16 pronto com `npm run docker:up` ou ambiente completo via `docker compose up --build`.
 * ✅ **Backend Base (NestJS)**: Prisma ORM v6 integrado, Swagger ativo em `/api/docs`, CORS habilitado e pipes de validação globais.
-* ✅ **Frontend Base (React Vite)**: Tailwind CSS v4, Lucide icons, cliente Axios com interceptor de renovação de token e tela de status operacional.
+* ✅ **Frontend Base (React Vite)**: Tailwind CSS v4, Google Fonts (Fraunces, DM Sans, Space Mono), tokens de cores temáticas, utilitários em `theme.ts` e tela de status operacional.
 * ✅ **Governança Git Ativa**: Branch `main` protegida, `.github/CODEOWNERS` configurado (Derek como aprovador obrigatório), template de PR padronizado e repositório público no GitHub ([derek-alves/lista-de-compras](https://github.com/derek-alves/lista-de-compras)).
 
 ---
@@ -69,40 +69,79 @@ flowchart TD
 
 ---
 
-## 📋 Backlog Completo Agrupado por Milestone e Trilha
+## 📋 Backlog Completo com Referências Diretas ao Protótipo Original
 
 ---
 
 ### 🎨 Milestone 0: Design System & UI Kit Reutilizável (Component-First)
 
-Nesta fase inicial, os dois desenvolvedores analisam o [lista-mercado.html](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html) e extraem todo o visual para componentes React reutilizáveis dentro de `apps/web/src/components/ui/`.
+Nesta fase inicial, os dois desenvolvedores extraem os componentes visuais diretamente do arquivo base [docs/lista-mercado.html](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html) para componentes React reutilizáveis dentro de `apps/web/src/components/ui/`.
 
 #### 🧑‍💻 Pacote Dev A — Componentes Atômicos, Inputs e Feedback
-* **[ISSUE-00A] Componentes Atômicos: Button, Input e SearchBar**
-  * *O que fazer*: 
-    * `Button`: Componente flexível com suporte a variantes (`primary`, `secondary`, `danger`, `clear-link`), tamanhos e estado `disabled`.
-    * `Input` e `SearchBar`: Campo de texto com suporte a ícone de busca à esquerda e botão de limpar texto à direita.
-  * *Critérios de Aceite*: Componentes aceitam todas as props nativas de HTML via TypeScript e suportam ref (`React.forwardRef`).
-* **[ISSUE-00B] Componentes de Dados: ProductChip, CategoryBadge e Toast**
+
+* **[ISSUE-00A] Componente `Button` com 4 Variantes de Mercado**
+  * *O que fazer*: Criar botão reutilizável flexível com suporte a variantes (`primary`, `light`, `clear-link`, `danger-outline`), tamanhos e estado `disabled`.
+  * *Referência no protótipo base*:
+    * Variante `primary`: [CSS linhas 210-215](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L210-L215)
+    * Variante `light` (fundo creme, texto vermelho): [CSS linhas 145-148](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L145-L148) | [HTML linha 313](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L313)
+    * Variante `clear-link` (sem fundo, sublinhado): [CSS linhas 149-152](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L149-L152) | [HTML linha 310](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L310)
+    * Variante `danger-outline` (borda vermelha): [CSS linhas 256-258](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L256-L258) | [JS linha 621](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L621)
+  * *Critérios de Aceite*: Componente aceita todas as props nativas via TypeScript (`React.ButtonHTMLAttributes<HTMLButtonElement>`) e suporta `forwardRef`.
+
+* **[ISSUE-00B] Componentes de Entrada: `SearchBar` e `DateRowInput`**
   * *O que fazer*:
-    * `ProductChip`: O chip de produto original com a bolinha colorida (`CategoryDot`), estado ativo/selecionado com mudança de background e escala no clique (`active:scale-95`).
-    * `Toast`: Componente flutuante inferior para notificações rápidas de sucesso/erro com auto-dismiss.
-  * *Critérios de Aceite*: Recebe a cor da categoria via prop ou variável CSS e reage visualmente de forma idêntica ao protótipo original.
+    * `SearchBar`: Campo com fundo marfim (`#fffdf7`), borda suave de 1px e cantos arredondados (10px).
+    * `DateRowInput`: Card com label em caixa alta e input `type="date"` estilizado em fonte monoespaçada.
+  * *Referência no protótipo base*:
+    * `SearchBar`: [CSS linhas 84-94](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L84-L94) | [HTML linhas 283-285](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L283-L285)
+    * `DateRowInput`: [CSS linhas 155-164](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L155-L164) | [HTML linhas 291-294](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L291-L294)
+
+* **[ISSUE-00C] Componentes de Seleção: `ProductChip` e `CategoryDot`**
+  * *O que fazer*: Pílula arredondada com bolinha colorida da categoria (`CategoryDot`), efeito tátil de clique (`active:scale-95`) e alternância entre estado padrão e selecionado (fundo preenchido com a cor da categoria e texto creme).
+  * *Referência no protótipo base*: [CSS linhas 109-131](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L109-L131) | [JS linhas 400-406](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L400-L406)
+
+* **[ISSUE-00D] Feedback e Mensagens: `Toast` e `EmptyState`**
+  * *O que fazer*:
+    * `Toast`: Notificação flutuante inferior em fundo escuro (`--ink`) e texto claro com transição de subida (`translateY`) e auto-dismiss.
+    * `EmptyState`: Mensagem centralizada e tipografada para estados de lista vazia.
+  * *Referência no protótipo base*:
+    * `Toast`: [CSS linhas 260-265](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L260-L265) | [HTML linha 316](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L316) | [JS linhas 374-379](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L374-L379)
+    * `EmptyState`: [CSS linhas 165-168](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L165-L168) | [HTML linha 451](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L451)
 
 ---
 
-#### 👩‍💻 Pacote Dev B — Estrutura de Layout, Barras e Cartões
-* **[ISSUE-00C] Layout e Navegação: Header e TabsNav**
+#### 👩‍💻 Pacote Dev B — Estrutura de Layout, Barras e Dashboards
+
+* **[ISSUE-00E] Estrutura e Navegação: `AppHeader`, `AppContainer` e `TabsNav`**
   * *O que fazer*:
-    * `Header`: Top bar com o título "🧺 Feira & Cia", tipografia serifada/elegante e slogan temático.
-    * `TabsNav`: Navegação por abas com transição ativa estilizada (Lista, Compra, Painel).
-  * *Critérios de Aceite*: Aceita a aba ativa como prop e dispara callback `onTabChange(tab)`.
-* **[ISSUE-00D] Barras Fixas e Cartões: FloatBar, ReceiptBar e KpiCard**
+    * `AppHeader`: Barra de topo fixa (`sticky top: 0`) com título em fonte `Fraunces` e slogan temático.
+    * `TabsNav`: Navegador por abas (Lista, Compra, Painel) com borda superior arredondada (`rounded-t-lg`) e transição de estado ativo.
+    * `AppContainer`: Container com largura máxima de 520px centralizado para mobile.
+  * *Referência no protótipo base*:
+    * `AppHeader`: [CSS linhas 40-58](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L40-L58) | [HTML linhas 270-273](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L270-L273)
+    * `TabsNav`: [CSS linhas 59-77](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L59-L77) | [HTML linhas 273-277](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L273-L277) | [JS linhas 643-656](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L643-L656)
+
+* **[ISSUE-00F] Cabeçalho de Categoria: `CategoryHeader`**
+  * *O que fazer*: Título da seção com barra lateral esquerda de 5px (`border-l-[5px]`) tingida na cor da categoria, ícone emoji e nome em fonte *Fraunces*.
+  * *Referência no protótipo base*: [CSS linhas 95-108](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L95-L108) | [JS linhas 389-395](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L389-L395)
+
+* **[ISSUE-00G] Barras Flutuantes: `FloatBar` e `ReceiptBar`**
   * *O que fazer*:
-    * `FloatBar`: A barra inferior vermelha com o contador de itens selecionados e slots para botões de ação ("limpar" e "iniciar compra").
-    * `ReceiptBar`: A barra estilo cupom fiscal com borda serrilhada superior (`.torn`), exibição de total grande e botão de finalizar compra.
-    * `KpiCard` & `CategoryProgressBar`: Cartão de métricas e barra de progresso horizontal colorida para os gráficos de despesas por categoria.
-  * *Critérios de Aceite*: Layout 100% responsivo (max-w-xl centralizado para mobile) e estilizado com Tailwind CSS.
+    * `FloatBar`: Barra fixa inferior vermelha com contagem de itens, link de limpar e botão de iniciar compra.
+    * `ReceiptBar`: Barra estilo nota fiscal com acabamento serrilhado no topo (`.receipt-torn`), exibição grande do total e botão de finalizar compra.
+  * *Referência no protótipo base*:
+    * `FloatBar`: [CSS linhas 132-152](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L132-L152) | [HTML linhas 308-315](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L308-L315) | [JS linhas 423-430](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L423-L430)
+    * `ReceiptBar`: [CSS linhas 190-216](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L190-L216) | [JS linhas 518-532](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L518-L532)
+
+* **[ISSUE-00H] Dashboards: `KpiCard`, `CategoryProgressBar` e `PurchaseHistoryCard`**
+  * *O que fazer*:
+    * `KpiCard`: Card com label em caixa alta e valor monetário/contagem em `Space Mono`.
+    * `CategoryProgressBar`: Barra proporcional horizontal com nome da categoria e valor em R$.
+    * `PurchaseHistoryCard`: Card sanfonado (`<details> / <summary>`) com data no padrão brasileiro, lista de itens pontilhada e botão de exclusão.
+  * *Referência no protótipo base*:
+    * `KpiCard`: [CSS linhas 218-225](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L218-L225) | [JS linhas 574-592](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L574-L592)
+    * `CategoryProgressBar`: [CSS linhas 230-237](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L230-L237) | [JS linhas 593-607](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L593-L607)
+    * `PurchaseHistoryCard`: [CSS linhas 238-259](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L238-L259) | [JS linhas 609-633](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L609-L633)
 
 > 🔗 **Ponto de Integração da Milestone 0 (Showcase)**:
 > Dev A e Dev B criam a página `/ui-kit` (Galeria de Componentes) onde colocam todos os botões, chips, barras e inputs lado a lado funcionando. Derek revisa a qualidade e o acabamento dos componentes antes de avançarem para o backend.
@@ -143,7 +182,7 @@ Nesta fase inicial, os dois desenvolvedores analisam o [lista-mercado.html](file
 #### 🧑‍💻 Pacote Dev A — Catálogo e Busca de Produtos
 * **[ISSUE-05] Backend: Seed do Banco com as 10 Categorias e Produtos**
   * *Camada*: Prisma (`prisma/seed.ts`).
-  * *O que fazer*: Script para popular o banco com as 10 categorias padrão com cores temáticas e produtos reais do protótipo.
+  * *O que fazer*: Script para popular o banco com as 10 categorias padrão com cores temáticas e produtos reais do protótipo base ([linhas 323-334](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L323-L334)).
 * **[ISSUE-06] Backend: API de Listagem e Criação de Produtos**
   * *Camada*: NestJS (`ProductsModule`).
   * *O que fazer*: Criar `GET /products` com busca por texto (`search`) e categoria (`categoryId`), além de `POST /products` para novos produtos criados pelo usuário.
@@ -156,7 +195,7 @@ Nesta fase inicial, os dois desenvolvedores analisam o [lista-mercado.html](file
 #### 👩‍💻 Pacote Dev B — Seleção de Itens e Persistência da Lista
 * **[ISSUE-08] Frontend: ListContext e Conexão com a FloatBar**
   * *Camada*: React Context (`ListContext`).
-  * *O que fazer*: Conectar o `ListContext` aos chips do Dev A e à `FloatBar` da Milestone 0. Corrigir o bug do protótipo: o botão "Limpar" zera os chips e oculta a barra sem deixar lixo de estado.
+  * *O que fazer*: Conectar o `ListContext` aos chips do Dev A e à `FloatBar` da Milestone 0. Corrigir o bug do protótipo: o botão "Limpar" zera os chips e oculta a barra sem deixar lixo de estado ([referência de bug: linhas 432-437](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L432-L437)).
 * **[ISSUE-09] Full-stack: Persistência da Lista Ativa no Backend**
   * *Camada*: NestJS (`ListsModule`) + React.
   * *O que fazer*: Endpoints `GET /lists/active` e `PUT /lists/active` para salvar a lista em andamento do usuário no PostgreSQL.
@@ -172,7 +211,7 @@ Nesta fase inicial, os dois desenvolvedores analisam o [lista-mercado.html](file
 #### 🧑‍💻 Pacote Dev A — Experiência do Carrinho e Inteligência de Preço
 * **[ISSUE-10] Frontend: Aba de Compra (Carrinho em Tempo Real)**
   * *Camada*: React.
-  * *O que fazer*: Montar a aba *Compra* exibindo apenas os itens marcados na aba anterior, utilizando os inputs numéricos estilizados. Preencher quantidade default como `1` e calcular subtotais instantaneamente.
+  * *O que fazer*: Montar a aba *Compra* exibindo apenas os itens marcados na aba anterior, utilizando o card de produto do carrinho (`.row-item`: [linhas 169-189](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L169-L189)). Preencher quantidade default como `1` e calcular subtotais instantaneamente.
 * **[ISSUE-11] Full-stack: Preenchimento com o Último Preço Pago**
   * *Camada*: NestJS (`GET /products/:id/last-price`) + React.
   * *O que fazer*: Criar endpoint que busca no histórico de compras o valor pago anteriormente pelo usuário naquele item e pré-preenche o preço estimado no carrinho.
@@ -185,10 +224,10 @@ Nesta fase inicial, os dois desenvolvedores analisam o [lista-mercado.html](file
   * *O que fazer*: Criar endpoints para listar e registrar mercados onde as compras foram realizadas (ex: "Carrefour", "Assaí", "Feira da Praça").
 * **[ISSUE-13] Backend: Finalização de Compra com Transação Atômica**
   * *Camada*: NestJS (`POST /purchases`) + Prisma `$transaction`.
-  * *O que fazer*: Endpoint que valida subtotais no backend, cria a transação em `PurchaseHistory`, adiciona os `PurchaseItem` e esvazia a lista ativa do usuário com garantia de *rollback* em caso de erro.
+  * *O que fazer*: Endpoint que valida subtotais no backend, cria a transação em `PurchaseHistory`, adiciona os `PurchaseItem` e esvazia a lista ativa do usuário com garantia de *rollback* em caso de erro ([lógica original: linhas 534-570](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L534-L570)).
 * **[ISSUE-14] Frontend: Sincronização Cruzada de Itens (Correção de Bug)**
   * *Camada*: React.
-  * *O que fazer*: Conectar a remoção de itens na aba Compra com o desmarque do chip na aba Lista e a atualização do total na `ReceiptBar`.
+  * *O que fazer*: Conectar a remoção de itens na aba Compra com o desmarque do chip na aba Lista e a atualização do total na `ReceiptBar` ([bug original: linhas 477-486](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L477-L486)).
 
 > 🔗 **Ponto de Integração da Milestone 3**:
 > O carrinho montado pelo Dev A consome o cadastro de mercados e dispara o endpoint de finalização atômica criado pelo Dev B, registrando a compra com segurança no banco.
@@ -200,17 +239,17 @@ Nesta fase inicial, os dois desenvolvedores analisam o [lista-mercado.html](file
 #### 🧑‍💻 Pacote Dev A — Dashboard Financeiro e Estatísticas
 * **[ISSUE-15] Backend: API de Agregações Financeiras e Gastos por Categoria**
   * *Camada*: NestJS (`GET /dashboard/summary`) + SQL/Prisma.
-  * *O que fazer*: Calcular total gasto, ticket médio por compra, quantidade de compras e gastos agrupados por categoria com filtro de data.
+  * *O que fazer*: Calcular total gasto, ticket médio por compra, quantidade de compras e gastos agrupados por categoria com filtro de data ([cálculos originais: linhas 574-586](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L574-L586)).
 * **[ISSUE-16] Frontend: Painel de Métricas Conectando os KpiCards**
   * *Camada*: React.
-  * *O que fazer*: Construir a aba *Painel* consumindo o endpoint do resumo: conectar os `KpiCard` e as `CategoryProgressBar` criados na Milestone 0 com os dados reais da API.
+  * *O que fazer*: Construir a aba *Painel* consumindo o endpoint do resumo: conectar os `KpiCard` e as `CategoryProgressBar` criados na Milestone 0 com os dados reais da API ([layout original: linhas 587-606](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L587-L606)).
 
 ---
 
 #### 👩‍💻 Pacote Dev B — Histórico de Compras e Compartilhamento
 * **[ISSUE-17] Full-stack: Histórico de Compras com Edição de Data**
   * *Camada*: NestJS + React.
-  * *O que fazer*: Listagem sanfonada (accordion) de compras passadas com detalhe de itens, botão de exclusão com modal de confirmação e possibilidade de alterar a data pós-finalizada.
+  * *O que fazer*: Listagem sanfonada (accordion) de compras passadas com detalhe de itens, botão de exclusão com modal de confirmação e possibilidade de alterar a data pós-finalizada ([render original: linhas 609-633](file:///c:/Users/derek/Documents/projeto%20de%20carreira/lista-de-compras/docs/lista-mercado.html#L609-L633)).
 * **[ISSUE-18] Full-stack: Compartilhamento de Lista entre Usuários**
   * *Camada*: NestJS + React.
   * *O que fazer*: Sistema de convite por email para que dois usuários visualizem e gerenciem a mesma lista de feira simultaneamente.
