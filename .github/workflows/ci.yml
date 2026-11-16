@@ -44,8 +44,11 @@ jobs:
       - name: Gerar Prisma Client
         run: npm run prisma:generate
 
-      - name: Compilar Backend e Frontend (TypeScript + Vite)
-        run: npm run build
+      - name: Compilar Backend (NestJS)
+        run: npm run build:api
+
+      - name: Compilar Frontend (React 19 + Vite)
+        run: npm run build:web
 
   # 3. Suíte de Testes Automatizados (Estratégia Gradual)
   unit-tests:
