@@ -19,7 +19,7 @@
     "build": "npm run build:api && npm run build:web",
     "test:api": "npm run test --workspace=apps/api",
     "test": "npm run test:api",
-    "prisma:generate": "npm run prisma --workspace=apps/api -- generate",
+    "prisma:generate": "npm run prisma:generate --workspace=apps/api",
     "prisma:studio": "npx prisma studio --schema=apps/api/prisma/schema.prisma"
   },
   "devDependencies": {}
