@@ -62,7 +62,8 @@ O **Docker** cria "containers" (máquinas virtuais extremamente leves) para roda
 
 ### Por que usamos no projeto?
 * Em vez de você ter que instalar o PostgreSQL na sua máquina Windows, configurar usuário, senha, portas e serviços do Windows, o Docker sobe o banco em 3 segundos através do container `postgres:16-alpine`.
-* O comando `npm run docker:up` inicia o banco em background.
+* O comando `npm run docker:db` inicia apenas o banco PostgreSQL em background.
+* O comando `npm run docker:up` inicia todos os containers (banco, api e web) em background.
 * O comando `docker compose down -v` apaga o container e o volume, permitindo resetar o banco do zero a qualquer momento.
 
 ---

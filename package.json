@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "docker:dev": "docker compose up --build",
+    "docker:db": "docker compose up -d postgres",
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
     "docker:clean": "docker compose down -v",

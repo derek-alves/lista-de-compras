@@ -34,9 +34,9 @@ npm install
 ```
 
 #### 2. Subir o Banco de Dados (PostgreSQL)
-Inicie o container do PostgreSQL em segundo plano:
+Inicie apenas o container do PostgreSQL em segundo plano:
 ```bash
-npm run docker:up
+npm run docker:db
 ```
 *(O banco ficará rodando na porta `5432` com volume persistente).*
 
