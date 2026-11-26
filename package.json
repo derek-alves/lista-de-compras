@@ -23,5 +23,10 @@
     "prisma:generate": "npm run prisma:generate --workspace=apps/api",
     "prisma:studio": "npx prisma studio --schema=apps/api/prisma/schema.prisma"
   },
-  "devDependencies": {}
+  "dependencies": {
+    "styled-components": "^6.7.0"
+  },
+  "devDependencies": {
+    "@types/styled-components": "^5.1.36"
+  }
 }
